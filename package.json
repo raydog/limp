@@ -5,6 +5,7 @@
   "main": "limp.js",
   "scripts": {
     "test": "mocha",
+    "nyan": "mocha -R nyan",
     "coverage": "istanbul cover _mocha"
   },
   "keywords": [
