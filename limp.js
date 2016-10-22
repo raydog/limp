@@ -57,15 +57,20 @@ function _handleStep(state, err, errs, data) {
   Object.defineProperty(_main, "group", { value: _group });
   Object.defineProperty(_main, "await", { value: _promise });
 
+  // Give a place for a callback to request something to be called immediately
+  // after synchronous execution:
+  var after_sync = [];
+
   // Call fn synchronously:
   var fn = state.fns[state.cur];
   var args = [ err ].concat(data);
-
   fn.apply(_main, args);
 
   // ... and don't accept any more args:
   no_more = true;
-  return _maybeNext();
+  _maybeNext();
+  after_sync.forEach(function (fn) { fn(); });
+  return;
 
   function _main(err) {
     _limpAssert(false, "TODO: main");
@@ -85,7 +90,9 @@ function _handleStep(state, err, errs, data) {
   }
 
   function _group() {
-    _limpAssert(false, "TODO: group");
+    _limpAssert(!no_more, "this.group() used after current step completed.");
+    _limpAssert(!rest_used, "this.group() used after this.rest() was used.");
+    return _groupResultCb(cur_idx++);
   }
   function _promise(p) {
     _limpAssert(!no_more, "this.await() used after current step completed.");
@@ -139,27 +146,47 @@ function _handleStep(state, err, errs, data) {
     }
   }
 
-  // function _arrayResultCb(idx) {
-  //   var times_called = 0;
-  //   var array_data = [];
-  //   var array_errs = [];
-  //   return function () {
-  //     function (err, val) {
-  //       _limpAssert(++times_called === 1, "Callback was called " + times_called + " times!");
+  function _groupResultCb(idx) {
+    var array_counter = 0;
+    var array_returned = 0;
+    var array_res = [];
+    var array_err = [];
 
-  //       // Store error if we don't have one already:
-  //       if (err && !result_err) { result_err = err; }
+    var sync_ended = false;
 
-  //       // Store the result no matter what:
-  //       result_errs[idx] = err;
-  //       result_data[idx] = val;
-  //       returned ++;
+    // If no groups were created after sync execution, then we have this function
+    // to make sure that the empty array is published:
+    after_sync.push(_maybePublishArray);
 
-  //       // ... and move on:
-  //       _maybeNext();
-  //     }
-  //   };
-  // }
+    function _maybePublishArray(is_cb) {
+      if (!is_cb) { sync_ended = true; }
+      if (array_counter > array_returned) { return; }
+      if (!sync_ended) { return; }
+      result_errs[idx] = array_err;
+      result_data[idx] = array_res;
+      returned ++;
+      _maybeNext();
+    }
+
+    return function () {
+      _limpAssert(!no_more, "group() used after current step completed.");
+      var my_idx = array_counter ++;
+      var times_called = 0;
+      return function (err, val) {
+        _limpAssert(++times_called === 1, "Callback was called " + times_called + " times!");
+
+        // Store error if we don't have one already:
+        if (err && !result_err) { result_err = err; }
+
+        // Store the results:
+        array_err[my_idx] = err;
+        array_res[my_idx] = val;
+
+        array_returned ++;
+        _maybePublishArray(true);
+      };
+    };
+  }
 
   function _maybeNext() {
     // All async callbacks should be accounted for:
