@@ -237,11 +237,10 @@ describe("this.parallel()", function () {
           return 42;
         },
         function (err, a) {
-          expect(err).toNotExist();
-          expect(a).toNotExist();
-          done();
+          done(new Error("Next stage entered"));
         }
       );
+      _delay(15, null, done);
     });
   });
 });
