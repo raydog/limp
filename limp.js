@@ -47,7 +47,8 @@ function _handleStep(state, err, errs, data) {
   var result_err = null;
 
   var no_more = false;
-  var rest_used = false;
+  var rest_name = null; // Equal to 'this()' or 'this.rest()' if one of those was used.
+  var this_called = 0;
   var cur_idx = 0;
   var returned = 0;
 
@@ -73,30 +74,47 @@ function _handleStep(state, err, errs, data) {
   return;
 
   function _main(err) {
-    _limpAssert(false, "TODO: main");
+    _limpAssert(++this_called === 1, "Callback was called %d times!", this_called);
+    _limpAssert(cur_idx === 0, "'this' can't be used with other callbacks.");
+    rest_name = "this()";
+
+    // Store error if we don't have one already:
+    if (err && !result_err) { result_err = err; }
+
+    var fn_results = Array.prototype.slice.call(arguments, 1);
+
+    // Store the result no matter what:
+    result_errs[0] = err;
+    result_data = fn_results;
+
+    cur_idx ++;
+    returned ++;
+
+    // ... and move on:
+    _maybeNext();
   }
 
   function _rest() {
     _limpAssert(!no_more, "this.rest() used after current step completed.");
-    _limpAssert(!rest_used, "this.rest() was already used in this step.");
-    rest_used = true;
+    _limpAssert(!rest_name, "%s was already used in this step.", rest_name);
+    rest_name = "this.rest()";
     return _multiResultCb(cur_idx++);
   }
 
   function _parallel() {
     _limpAssert(!no_more, "this.parallel() used after current step completed.");
-    _limpAssert(!rest_used, "this.parallel() used after this.rest() was used.");
+    _limpAssert(!rest_name, "this.parallel() used after %s was used.", rest_name);
     return _singleResultCb(cur_idx++);
   }
 
   function _group() {
     _limpAssert(!no_more, "this.group() used after current step completed.");
-    _limpAssert(!rest_used, "this.group() used after this.rest() was used.");
+    _limpAssert(!rest_name, "this.group() used after %s was used.", rest_name);
     return _groupResultCb(cur_idx++);
   }
   function _promise(p) {
     _limpAssert(!no_more, "this.await() used after current step completed.");
-    _limpAssert(!rest_used, "this.await() used after this.rest() was used.");
+    _limpAssert(!rest_name, "this.await() used after %s was used.", rest_name);
     _limpAssert(_isPromise(p), "this.await() requires a promise to be passed in");
     var cb = _singleResultCb(cur_idx++);
     p.then(
@@ -108,7 +126,7 @@ function _handleStep(state, err, errs, data) {
   function _singleResultCb(idx) {
     var times_called = 0;
     return function (err, val) {
-      _limpAssert(++times_called === 1, "Callback was called " + times_called + " times!");
+      _limpAssert(++times_called === 1, "Callback was called %d times!", times_called);
 
       // Store error if we don't have one already:
       if (err && !result_err) { result_err = err; }
@@ -126,7 +144,7 @@ function _handleStep(state, err, errs, data) {
   function _multiResultCb(idx) {
     var times_called = 0;
     return function (err) {
-      _limpAssert(++times_called === 1, "Callback was called " + times_called + " times!");
+      _limpAssert(++times_called === 1, "Callback was called %d times!", times_called);
 
       // Store error if we don't have one already:
       if (err && !result_err) { result_err = err; }
@@ -173,7 +191,7 @@ function _handleStep(state, err, errs, data) {
       var my_idx = array_counter ++;
       var times_called = 0;
       return function (err, val) {
-        _limpAssert(++times_called === 1, "Callback was called " + times_called + " times!");
+        _limpAssert(++times_called === 1, "Callback was called %d times!", times_called);
 
         // Store error if we don't have one already:
         if (err && !result_err) { result_err = err; }
@@ -190,7 +208,7 @@ function _handleStep(state, err, errs, data) {
 
   function _maybeNext() {
     // All async callbacks should be accounted for:
-    if (returned < cur_idx) { return; }
+    if (!cur_idx || returned < cur_idx) { return; }
 
     // The step function should have finished synchronous execution:
     if (!no_more) { return; }
