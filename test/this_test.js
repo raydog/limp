@@ -1,4 +1,3 @@
-var nextTick = require('next-tick');
 var expect = require('expect');
 var limp = require('../limp');
 

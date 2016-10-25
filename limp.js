@@ -12,7 +12,7 @@ function LimpError(message) {
   Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
-};
+}
 util.inherits(LimpError, Error);
 
 
@@ -138,7 +138,7 @@ function _handleStep(state, err, errs, data) {
 
       // ... and move on:
       _maybeNext();
-    }
+    };
   }
 
   function _multiResultCb(idx) {
@@ -161,7 +161,7 @@ function _handleStep(state, err, errs, data) {
 
       // ... and move on:
       _maybeNext();
-    }
+    };
   }
 
   function _groupResultCb(idx) {

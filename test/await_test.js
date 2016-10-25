@@ -46,7 +46,7 @@ describe("this.await()", function () {
         limp(
           function () {
             this.await(_makeResolved("foo"));
-            this.await(_makePromise(function (resolve, reject) {
+            this.await(_makePromise(function (resolve) {
               setTimeout(function () {
                 resolve("bar");
               }, 10);

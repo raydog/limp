@@ -1,4 +1,3 @@
-var nextTick = require('next-tick');
 var expect = require('expect');
 var limp = require('../limp');
 
@@ -135,7 +134,7 @@ describe("this.group()", function () {
       limp(
         function () {
           var self = this;
-          var g = self.group()();
+          self.group()();
           setTimeout(function () {
             expect(function () {
               self.group();

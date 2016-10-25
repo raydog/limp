@@ -223,7 +223,7 @@ describe("this.parallel()", function () {
         function () {
           throw new Error("Derp");
         },
-        function (err) {
+        function () {
           done(new Error("Limp passed along an exception!"));
         }
       );
@@ -236,7 +236,7 @@ describe("this.parallel()", function () {
         function () {
           return 42;
         },
-        function (err, a) {
+        function () {
           done(new Error("Next stage entered"));
         }
       );
