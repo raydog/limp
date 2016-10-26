@@ -1,7 +1,7 @@
 {
   "name": "limp",
-  "version": "0.0.0",
-  "description": "A utility to do things and stuff",
+  "version": "1.0.0",
+  "description": "An asyncronous control flow library",
   "main": "limp.js",
   "scripts": {
     "test": "mocha",
@@ -24,6 +24,10 @@
     "promise": "7.1.1",
     "q": "1.4.1",
     "rsvp": "3.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/raydog/limp.git"
   },
   "author": "Ray Myers",
   "license": "MIT"
