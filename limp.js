@@ -26,11 +26,18 @@ function _limpAssert(cond) {
 
 
 function Limp() {
+  var i;
   var state = {
     cur: 0,
     len: arguments.length,
     fns: arguments
   };
+
+  _limpAssert(state.len, "Limp called without any functions!");
+  for (i=0; i<state.len; i++) {
+    _limpAssert(typeof state.fns[i] === "function", "Limp argument #%d is not a function.", i+1);
+  }
+
   _asyncAdvance(state, null, [], []);
 }
 
@@ -41,6 +48,12 @@ function _asyncAdvance(state, err, errs, data) {
 }
 
 function _handleStep(state, err, errs, data) {
+
+  if (state.cur >= state.len) {
+    // If this is past the final stage, but an error was passed here, just re-throw it:
+    if (err) { throw err; }
+    return;
+  }
 
   var result_data = [];
   var result_errs = [];
@@ -215,9 +228,7 @@ function _handleStep(state, err, errs, data) {
 
     // Else, this step is done. Increment index, and (maybe) advance:
     state.cur ++;
-    if (state.cur < state.len) {
-      _asyncAdvance(state, result_err, result_errs, result_data);
-    }
+    _asyncAdvance(state, result_err, result_errs, result_data);
   }
 }
 
