@@ -2,7 +2,7 @@ var expect = require('expect');
 var limp = require('../limp');
 
 
-describe("fallback this callback", function () {
+describe("this()", function () {
   describe("is fine with", function () {
     it("no args", function (done) {
       limp(
