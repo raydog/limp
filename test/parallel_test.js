@@ -198,51 +198,6 @@ describe("this.parallel()", function () {
       );
     });
   });
-
-  describe("handles exceptions", function () {
-
-    var mocha_handler;
-    before(function () {
-      mocha_handler = process.listeners('uncaughtException').shift();
-      process.removeListener('uncaughtException', mocha_handler);
-    });
-
-    after(function () {
-      process.on('uncaughtException', mocha_handler);
-    });
-
-    it("by NOT passing them along", function (done) {
-
-      process.once('uncaughtException', function (err) {
-        expect(err).toExist();
-        expect(err.message).toBe("Derp");
-        done();
-      });
-
-      limp(
-        function () {
-          throw new Error("Derp");
-        },
-        function () {
-          done(new Error("Limp passed along an exception!"));
-        }
-      );
-    });
-  });
-
-  describe("handles values returned", function () {
-    it("by not passing them along", function (done) {
-      limp(
-        function () {
-          return 42;
-        },
-        function () {
-          done(new Error("Next stage entered"));
-        }
-      );
-      _delay(15, null, done);
-    });
-  });
 });
 
 function _delay(ms, data, cb) {
