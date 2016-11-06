@@ -109,6 +109,22 @@ describe("Overall Limp behavior", function () {
     );
   });
 
+  it("thrown errors are the correct type", function (done) {
+    limp(
+      function () {
+        var cb = this.parallel();
+        cb();
+        try {
+          cb();
+        } catch (ex) {
+          expect(ex).toBeAn(Error);
+          expect(ex).toBeA(limp.LimpError);
+        }
+        done();
+      }
+    );
+  });
+
   describe("error handling", function () {
 
     var mocha_handler;

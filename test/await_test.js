@@ -102,6 +102,8 @@ describe("this.await()", function () {
           },
           function (err, a, b) {
             expect(err).toExist();
+            expect(err).toBeAn(Error);
+            expect(err).toBeA(limp.EmptyRejectionError);
             expect(err.message).toMatch(/rejected without an error/i);
 
             expect(a).toBe("whatever");
