@@ -90,6 +90,28 @@ describe("this.await()", function () {
         );
       });
 
+      it("makes sure that an empty rejection has SOMETHING passed along", function (done) {
+        limp(
+          function () {
+            this.await(_makeResolved("whatever"));
+            this.await(_makePromise(function (resolve, reject) {
+              setTimeout(function () {
+                reject();
+              }, 10);
+            }));
+          },
+          function (err, a, b) {
+            expect(err).toExist();
+            expect(err.message).toMatch(/rejected without an error/i);
+
+            expect(a).toBe("whatever");
+            expect(b).toBe(undefined);
+
+            done();
+          }
+        );
+      });
+
       it("rejects a cb created after the step", function (done) {
         limp(
           function () {

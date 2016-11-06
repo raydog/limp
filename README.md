@@ -98,7 +98,7 @@ limp(
 
 ### `this.await(p)`
 
-The `this.await(p)` method waits for a promise. If it resolves to a value, that value is passed along to the next stage. If it rejects, that value will be passed along as an error. This lets you easily merge promises into callback logic.
+The `this.await(p)` method waits for a promise. If it resolves to a value, that value is passed along to the next stage. If it rejects, the error will be passed along to the next stage, and a new error will be created if the promise rejected for no reason. This lets you easily merge promises into callback logic.
 
 ```javascript
 limp(

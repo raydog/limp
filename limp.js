@@ -5,15 +5,25 @@ var util = require('util');
 // Exported API:
 module.exports = Limp;
 module.exports.LimpError = LimpError;
+module.exports.EmptyRejectionError = EmptyRejectionError;
 
 
-// Any error we return is an instance of this:
+// All our assert errors are of this type:
 function LimpError(message) {
   Error.captureStackTrace(this, this.constructor);
   this.name = this.constructor.name;
   this.message = message;
 }
 util.inherits(LimpError, Error);
+
+
+// We use this error when a promise rejects without an error:
+function EmptyRejectionError(message) {
+  Error.captureStackTrace(this, this.constructor);
+  this.name = this.constructor.name;
+  this.message = message;
+}
+util.inherits(EmptyRejectionError, Error);
 
 
 // Internal util to easily throw new LimpErrors in various circumstances:
@@ -132,7 +142,7 @@ function _handleStep(state, err, errs, data) {
     var cb = _singleResultCb(cur_idx++);
     p.then(
       function onResolve(val) { cb(null, val); },
-      function onReject(err) { cb(err); }
+      function onReject(err) { cb(err || new EmptyRejectionError("Promise rejected without an error.")); }
     );
   }
 
