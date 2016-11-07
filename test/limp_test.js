@@ -125,6 +125,72 @@ describe("Overall Limp behavior", function () {
     );
   });
 
+  it("alright with nested calls", function (done) {
+    limp(
+      function () {
+        var next = this.parallel();
+        limp(
+          function () {
+            setTimeout(this.bind(null, null, "foo"), 10);
+          },
+          function (err, a) {
+            if (err) { return done(err); }
+            expect(a).toBe("foo");
+            next(null, "bar");
+          }
+        );
+      },
+      function (err, b) {
+        if (err) { return done(err); }
+        expect(b).toBe("bar");
+        done();
+      }
+    );
+  });
+
+  it("alright with parallel calls", function (done) {
+    limp(
+      function () {
+        var past_first = false;
+
+        var cb_a = this.parallel();
+        limp(
+          function () {
+            expect(past_first).toBe(false);
+            setTimeout(this.bind(null, null, "lol"), 10);
+          },
+          function (err, a) {
+            if (err) { return done(err); }
+            past_first = true;
+            expect(a).toBe("lol");
+            cb_a(null, "123");
+          }
+        );
+
+        var cb_b = this.parallel();
+        limp(
+          function () {
+            expect(past_first).toBe(false);
+            setTimeout(this.bind(null, null, "blah"), 10);
+          },
+          function (err, a) {
+            if (err) { return done(err); }
+            past_first = true;
+            expect(a).toBe("blah");
+            cb_b(null, "456");
+          }
+        );
+
+      },
+      function (err, a, b) {
+        if (err) { return done(err); }
+        expect(a).toBe("123");
+        expect(b).toBe("456");
+        done();
+      }
+    );
+  });
+
   describe("error handling", function () {
 
     var mocha_handler;
