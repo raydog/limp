@@ -112,7 +112,7 @@ describe("this.rest()", function () {
       );
     });
 
-    it("calling after step", function (done) {
+    it("calling after stage", function (done) {
       limp(
         function () {
           var self = this;
@@ -120,7 +120,7 @@ describe("this.rest()", function () {
           setTimeout(function () {
             expect(function () {
               self.rest();
-            }).toThrow(/after current step/i);
+            }).toThrow(/after current stage/i);
             done();
           }, 10);
         }

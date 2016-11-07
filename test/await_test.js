@@ -114,7 +114,7 @@ describe("this.await()", function () {
         );
       });
 
-      it("rejects a cb created after the step", function (done) {
+      it("rejects a cb created after the stage", function (done) {
         limp(
           function () {
             var self = this;
@@ -124,7 +124,7 @@ describe("this.await()", function () {
             setTimeout(function () {
               expect(function () {
                 self.await(_makeResolved());
-              }).toThrow(/after current step/i);
+              }).toThrow(/after current stage/i);
               done();
             }, 10);
           }

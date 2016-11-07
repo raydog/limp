@@ -130,7 +130,7 @@ describe("this.group()", function () {
   });
 
   describe("will reject", function () {
-    it("new group after step", function (done) {
+    it("new group after stage", function (done) {
       limp(
         function () {
           var self = this;
@@ -138,14 +138,14 @@ describe("this.group()", function () {
           setTimeout(function () {
             expect(function () {
               self.group();
-            }).toThrow(/after current step/i);
+            }).toThrow(/after current stage/i);
             done();
           }, 10);
         }
       );
     });
 
-    it("new group item after step", function (done) {
+    it("new group item after stage", function (done) {
       limp(
         function () {
           var self = this;
@@ -154,7 +154,7 @@ describe("this.group()", function () {
           setTimeout(function () {
             expect(function () {
               g();
-            }).toThrow(/after current step/i);
+            }).toThrow(/after current stage/i);
             done();
           }, 10);
         }

@@ -53,11 +53,11 @@ function Limp() {
 
 function _asyncAdvance(state, err, errs, data) {
   nextTick(function () {
-    _handleStep(state, err, errs, data);
+    _handleStage(state, err, errs, data);
   });
 }
 
-function _handleStep(state, err, errs, data) {
+function _handleStage(state, err, errs, data) {
 
   if (state.cur >= state.len) {
     // If this is past the final stage, but an error was passed here, just re-throw it:
@@ -118,25 +118,25 @@ function _handleStep(state, err, errs, data) {
   }
 
   function _rest() {
-    _limpAssert(!no_more, "this.rest() used after current step completed.");
-    _limpAssert(!rest_name, "%s was already used in this step.", rest_name);
+    _limpAssert(!no_more, "this.rest() used after current stage completed.");
+    _limpAssert(!rest_name, "%s was already used in this stage.", rest_name);
     rest_name = "this.rest()";
     return _multiResultCb(cur_idx++);
   }
 
   function _parallel() {
-    _limpAssert(!no_more, "this.parallel() used after current step completed.");
+    _limpAssert(!no_more, "this.parallel() used after current stage completed.");
     _limpAssert(!rest_name, "this.parallel() used after %s was used.", rest_name);
     return _singleResultCb(cur_idx++);
   }
 
   function _group() {
-    _limpAssert(!no_more, "this.group() used after current step completed.");
+    _limpAssert(!no_more, "this.group() used after current stage completed.");
     _limpAssert(!rest_name, "this.group() used after %s was used.", rest_name);
     return _groupResultCb(cur_idx++);
   }
   function _promise(p) {
-    _limpAssert(!no_more, "this.await() used after current step completed.");
+    _limpAssert(!no_more, "this.await() used after current stage completed.");
     _limpAssert(!rest_name, "this.await() used after %s was used.", rest_name);
     _limpAssert(_isPromise(p), "this.await() requires a promise to be passed in");
     var cb = _singleResultCb(cur_idx++);
@@ -210,7 +210,7 @@ function _handleStep(state, err, errs, data) {
     }
 
     return function () {
-      _limpAssert(!no_more, "group() used after current step completed.");
+      _limpAssert(!no_more, "group() used after current stage completed.");
       var my_idx = array_counter ++;
       var times_called = 0;
       return function (err, val) {
@@ -233,10 +233,10 @@ function _handleStep(state, err, errs, data) {
     // All async callbacks should be accounted for:
     if (!cur_idx || returned < cur_idx) { return; }
 
-    // The step function should have finished synchronous execution:
+    // The stage function should have finished synchronous execution:
     if (!no_more) { return; }
 
-    // Else, this step is done. Increment index, and (maybe) advance:
+    // Else, this stage is done. Increment index, and (maybe) advance:
     state.cur ++;
     _asyncAdvance(state, result_err, result_errs, result_data);
   }

@@ -168,7 +168,7 @@ describe("this.parallel()", function () {
       );
     });
 
-    it("a cb created after the step", function (done) {
+    it("a cb created after the stage", function (done) {
       limp(
         function () {
           var self = this;
@@ -176,7 +176,7 @@ describe("this.parallel()", function () {
           setTimeout(function () {
             expect(function () {
               self.parallel();
-            }).toThrow(/after current step/i);
+            }).toThrow(/after current stage/i);
             done();
           }, 10);
         }

@@ -88,7 +88,7 @@ describe("Overall Limp behavior", function () {
     );
   });
 
-  it("steps wait for all cbs even during error", function (done) {
+  it("stages wait for all cbs even during error", function (done) {
     this.slow(200);
 
     var start;
