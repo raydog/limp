@@ -4,9 +4,9 @@
   "description": "An asyncronous control flow library",
   "main": "limp.js",
   "scripts": {
-    "test": "mocha",
-    "nyan": "mocha -R nyan",
-    "coverage": "istanbul cover _mocha"
+    "test": "mocha --check-leaks --no-exit",
+    "nyan": "mocha --check-leaks -R nyan",
+    "coverage": "istanbul cover _mocha -- --check-leaks --no-exit"
   },
   "keywords": [
     "limp"
