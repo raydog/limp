@@ -1,4 +1,4 @@
-# Limp
+# Limp [![Build Status](https://travis-ci.org/raydog/limp.svg?branch=master)](https://travis-ci.org/raydog/limp)
 
 Limp is a simple asynchronous control-flow library. It is meant to be a mostly drop-in replacement for the [step](https://github.com/creationix/step) library, and so has a very similar API. Why use it instead of step? While step is a useful library, Limp improves upon it in several ways.
 
