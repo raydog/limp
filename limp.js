@@ -1,4 +1,4 @@
-var nextTick = require('next-tick');
+require('setimmediate');
 var util = require('util');
 
 
@@ -52,7 +52,7 @@ function Limp() {
 }
 
 function _asyncAdvance(state, err, errs, data) {
-  nextTick(function () {
+  setImmediate(function () {
     _handleStage(state, err, errs, data);
   });
 }

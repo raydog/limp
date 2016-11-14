@@ -12,7 +12,7 @@
     "limp"
   ],
   "dependencies": {
-    "next-tick": "1.0.0"
+    "setimmediate": "1.0.5"
   },
   "devDependencies": {
     "bluebird": "3.4.6",

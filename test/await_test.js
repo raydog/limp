@@ -1,6 +1,6 @@
-var nextTick = require('next-tick');
 var expect = require('expect');
 var limp = require('../limp');
+require('setimmediate');
 
 
 describe("this.await()", function () {
@@ -35,7 +35,7 @@ describe("this.await()", function () {
       if (PromiseLib.prototype.fulfill) {
         // Hack to support Mongoose promises:
         var P = new PromiseLib();
-        nextTick(fn.bind(null, P.fulfill.bind(P), P.reject.bind(P)));
+        setImmediate(fn.bind(null, P.fulfill.bind(P), P.reject.bind(P)));
         return P;
       }
       return new PromiseLib(fn);
