@@ -1,6 +1,6 @@
 {
   "name": "limp",
-  "version": "1.0.0-pre",
+  "version": "1.0.0",
   "description": "An asyncronous control flow library",
   "main": "limp.js",
   "scripts": {
