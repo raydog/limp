@@ -16,16 +16,16 @@
     "setimmediate": "1.0.5"
   },
   "devDependencies": {
-    "bluebird": "3.4.6",
-    "coveralls": "2.11.15",
-    "es6-promise": "4.0.5",
+    "bluebird": "3.5.0",
+    "coveralls": "2.13.1",
+    "es6-promise": "4.1.0",
     "expect": "1.20.2",
     "istanbul": "0.4.5",
-    "mocha": "3.1.2",
+    "mocha": "3.4.2",
     "mpromise": "0.5.5",
-    "promise": "7.1.1",
-    "q": "1.4.1",
-    "rsvp": "3.3.3"
+    "promise": "8.0.0",
+    "q": "1.5.0",
+    "rsvp": "3.5.0"
   },
   "repository": {
     "type": "git",
