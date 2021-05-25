@@ -16,16 +16,16 @@
     "setimmediate": "1.0.5"
   },
   "devDependencies": {
-    "bluebird": "3.5.0",
-    "coveralls": "2.13.1",
-    "es6-promise": "4.1.0",
-    "expect": "1.20.2",
-    "istanbul": "0.4.5",
-    "mocha": "3.4.2",
+    "bluebird": "3.7.2",
+    "coveralls": "3.1.0",
+    "es6-promise": "4.2.8",
+    "expect.js": "26.6.2",
+    "nyc": "15.1.0",
+    "mocha": "8.4.0",
     "mpromise": "0.5.5",
-    "promise": "8.0.0",
-    "q": "1.5.0",
-    "rsvp": "3.5.0"
+    "promise": "8.1.0",
+    "q": "1.5.1",
+    "rsvp": "4.8.5"
   },
   "repository": {
     "type": "git",
