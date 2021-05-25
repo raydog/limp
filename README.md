@@ -1,4 +1,6 @@
-# Limp [![Build Status](https://travis-ci.org/raydog/limp.svg?branch=master)](https://travis-ci.org/raydog/limp) [![Coverage Status](https://coveralls.io/repos/github/raydog/limp/badge.svg?branch=master)](https://coveralls.io/github/raydog/limp?branch=master)
+# Limp [![Build Status](https://travis-ci.com/raydog/limp.svg?branch=master)](https://travis-ci.com/raydog/limp) [![Coverage Status](https://coveralls.io/repos/github/raydog/limp/badge.svg?branch=master)](https://coveralls.io/github/raydog/limp?branch=master)
+
+**NOTE**: This is a library from a different javascript era. While it makes callbacks easier, you should probably aim to just use Promises instead.
 
 Limp is a simple asynchronous control-flow library. It is meant to be a mostly drop-in replacement for the [step](https://github.com/creationix/step) library, and so has a very similar API. Why use it instead of step? While step is a useful library, Limp improves upon it in several ways.
 
