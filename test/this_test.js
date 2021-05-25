@@ -79,7 +79,7 @@ describe("this()", function () {
           this(new Error("oh noes"));
         },
         function (err) {
-          expect(err).toExist();
+          expect(err).toBeTruthy();
           expect(err.message).toBe("oh noes");
           done();
         }
@@ -92,7 +92,7 @@ describe("this()", function () {
           _delay(10, this, [ new Error("ruh roh") ]);
         },
         function (err) {
-          expect(err).toExist();
+          expect(err).toBeTruthy();
           expect(err.message).toBe("ruh roh");
           done();
         }

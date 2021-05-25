@@ -73,17 +73,17 @@ describe("this.await()", function () {
             this.await(_makeRejected(new Error("blah")));
           },
           function (err, a, b, c) {
-            expect(err).toExist();
+            expect(err).toBeTruthy();
             expect(err.message).toBe("blah");
 
             expect(a).toBe("foo");
             expect(b).toBe(undefined);
             expect(c).toBe(undefined);
 
-            expect(this.errors[0]).toNotExist();
-            expect(this.errors[1]).toExist();
+            expect(this.errors[0]).toBeFalsy();
+            expect(this.errors[1]).toBeTruthy();
             expect(this.errors[1].message).toBe("bar");
-            expect(this.errors[2]).toExist();
+            expect(this.errors[2]).toBeTruthy();
             expect(this.errors[2].message).toBe("blah");
             done();
           }
@@ -101,9 +101,9 @@ describe("this.await()", function () {
             }));
           },
           function (err, a, b) {
-            expect(err).toExist();
-            expect(err).toBeAn(Error);
-            expect(err).toBeA(limp.EmptyRejectionError);
+            expect(err).toBeTruthy();
+            expect(err).toBeInstanceOf(Error);
+            expect(err).toBeInstanceOf(limp.EmptyRejectionError);
             expect(err.message).toMatch(/rejected without an error/i);
 
             expect(a).toBe("whatever");

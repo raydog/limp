@@ -113,14 +113,14 @@ describe("this.parallel()", function () {
           this.parallel()(new Error("blah"));
         },
         function (err, a, b) {
-          expect(err).toExist();
+          expect(err).toBeTruthy();
           expect(err.message).toBe("blah");
 
           expect(a).toBe("hello");
           expect(b).toBe(undefined);
 
-          expect(this.errors[0]).toNotExist();
-          expect(this.errors[1]).toExist();
+          expect(this.errors[0]).toBeFalsy();
+          expect(this.errors[1]).toBeTruthy();
           expect(this.errors[1].message).toBe("blah");
 
           done();
@@ -135,15 +135,15 @@ describe("this.parallel()", function () {
           this.parallel()(new Error("blah"));
         },
         function (err, a, b) {
-          expect(err).toExist();
+          expect(err).toBeTruthy();
           expect(err.message).toBe("derp");
 
           expect(a).toBe(undefined);
           expect(b).toBe(undefined);
 
-          expect(this.errors[0]).toExist();
+          expect(this.errors[0]).toBeTruthy();
           expect(this.errors[0].message).toBe("derp");
-          expect(this.errors[1]).toExist();
+          expect(this.errors[1]).toBeTruthy();
           expect(this.errors[1].message).toBe("blah");
 
           done();

@@ -49,7 +49,7 @@ describe("this.rest()", function () {
           expect(a).toBe(3.14159);
           expect(b).toBe(null);
           expect(c).toBe("foobar");
-          expect(d).toBeA("function");
+          expect(d).toBeInstanceOf(Function);
           done();
         }
       );
@@ -88,7 +88,7 @@ describe("this.rest()", function () {
         },
         function (err) {
           expect(arguments.length).toBe(1);
-          expect(err).toExist();
+          expect(err).toBeTruthy();
           expect(err.message).toBe("ruh-roh");
           done();
         }

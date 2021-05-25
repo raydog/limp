@@ -77,7 +77,7 @@ describe("this.group()", function () {
           _async(15, g(), new Error("oh noes"));
         },
         function (err, a) {
-          expect(err).toExist();
+          expect(err).toBeTruthy();
           expect(err.message).toBe("oh noes");
           expect(a).toEqual(["HELLO", undefined]);
           done();
@@ -93,12 +93,12 @@ describe("this.group()", function () {
           _async(15, g(), new Error("and another"));
         },
         function (err, a) {
-          expect(err).toExist();
+          expect(err).toBeTruthy();
           expect(err.message).toBe("a problem");
           expect(a).toEqual([undefined, undefined]);
 
-          expect(this.errors[0][0]).toExist();
-          expect(this.errors[0][1]).toExist();
+          expect(this.errors[0][0]).toBeTruthy();
+          expect(this.errors[0][1]).toBeTruthy();
           expect(this.errors[0][0].message).toBe("a problem");
           expect(this.errors[0][1].message).toBe("and another");
 

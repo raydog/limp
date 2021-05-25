@@ -77,7 +77,7 @@ describe("Overall Limp behavior", function () {
       function (err, res) {
         if (err) { return done(err); }
 
-        expect(res).toBeAn(Array);
+        expect(res).toBeInstanceOf(Array);
         expect(res.length).toBe(5000);
         for(var i=0; i<res.length; i++) {
           expect(res[i]).toBe("lol-" + i);
@@ -99,7 +99,7 @@ describe("Overall Limp behavior", function () {
         setTimeout(this.parallel().bind(null, null, "foobar"), 50);
       },
       function (err, a, b) {
-        expect(err).toExist();
+        expect(err).toBeTruthy();
         expect(err.message).toBe("blah");
         expect(a).toBe(undefined);
         expect(b).toBe("foobar");
@@ -117,8 +117,8 @@ describe("Overall Limp behavior", function () {
         try {
           cb();
         } catch (ex) {
-          expect(ex).toBeAn(Error);
-          expect(ex).toBeA(limp.LimpError);
+          expect(ex).toBeInstanceOf(Error);
+          expect(ex).toBeInstanceOf(limp.LimpError);
         }
         done();
       }
@@ -206,7 +206,7 @@ describe("Overall Limp behavior", function () {
     it("leaves thrown exceptions alone", function (done) {
 
       process.once('uncaughtException', function (err) {
-        expect(err).toExist();
+        expect(err).toBeTruthy();
         expect(err.message).toBe("Derp");
         done();
       });
@@ -223,7 +223,7 @@ describe("Overall Limp behavior", function () {
 
     it("throws callback errors after final stage", function (done) {
       process.once('uncaughtException', function (err) {
-        expect(err).toExist();
+        expect(err).toBeTruthy();
         expect(err.message).toBe("Derp");
         done();
       });
